@@ -36,7 +36,7 @@ def load_bp(oauth):
         return render_template('list.html')
 
 
-    @plugin_bp.route('/admin/sso/client/<int:client_id>', methods = ['GET', 'DELETE'])
+    @plugin_bp.route('/admin/sso/client/<string:client_id>', methods = ['GET', 'DELETE'])
     @admins_only
     def sso_details(client_id):
         if request.method == 'DELETE':
@@ -80,14 +80,14 @@ def load_bp(oauth):
         return render_template('create.html', form=form)
 
 
-    @plugin_bp.route("/sso/login/<int:client_id>", methods = ['GET'])
+    @plugin_bp.route("/sso/login/<string:client_id>", methods = ['GET'])
     def sso_oauth(client_id):
         client = oauth.create_client(client_id)
         redirect_uri=url_for('sso.sso_redirect', client_id=client_id, _external=True)
         return client.authorize_redirect(redirect_uri)
 
 
-    @plugin_bp.route("/sso/redirect/<int:client_id>", methods = ['GET'])
+    @plugin_bp.route("/sso/redirect/<string:client_id>", methods = ['GET'])
     def sso_redirect(client_id):
         client = oauth.create_client(client_id)
         client.authorize_access_token()
